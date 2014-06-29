@@ -41,9 +41,10 @@ public class NewsDaoImpl extends BaseDaoImpl implements NewsDao {
 	@Override
 	public int updateNews(News news) {
 		String sqlString  = "update news set newsTitle=?,dateTime=?,content=?,orgId=?," +
-				" isPost=?,isTop=?,changeDateTime=?  where newsId=?";
+				" isPost=?,isTop=?,changeDateTime=?, appndFileName=?,appndFilePath=? where newsId=?";
 		jdbcTemplate.update(sqlString,new Object[]{news.getNewsTitle(),news.getDateTime(),news.getContent(),
-				news.getOrgId(),news.getIsPost(),news.getIsTop(),news.getChangeDateTime(),news.getNewsId()});
+				news.getOrgId(),news.getIsPost(),news.getIsTop(),news.getChangeDateTime(),
+				news.getAppndFileName(),news.getAppndFilePath(),news.getNewsId()});
 		return 0;
 	}
 
@@ -56,10 +57,12 @@ public class NewsDaoImpl extends BaseDaoImpl implements NewsDao {
 
 	@Override
 	public int addNews(News news) {
-		String sql = "insert into news (newsTitle,dateTime,content,orgId,isPost,isTop,changeDateTime) " +
-				" values (?,?,?,?,?,?,?)";
+		String sql = "insert into news (newsTitle,dateTime,content,orgId,isPost,isTop,"
+				+ "changeDateTime,appndFileName,appndFilePath) " +
+				" values (?,?,?,?,?,?,?,?,?)";
 		jdbcTemplate.update(sql, new Object[]{news.getNewsTitle(),news.getDateTime(),news.getContent(),
-				news.getOrgId(),news.getIsPost(),news.getIsTop(),news.getChangeDateTime()});
+				news.getOrgId(),news.getIsPost(),news.getIsTop(),news.getChangeDateTime(),
+				news.getAppndFileName(),news.getAppndFilePath()});
 		return 0;
 		
 	}
@@ -71,7 +74,7 @@ public class NewsDaoImpl extends BaseDaoImpl implements NewsDao {
 			try {
 				News news = new News(rs.getString("newsId"),rs.getString("newsTitle"),rs.getString("dateTime"),
 						rs.getString("content"),rs.getString("orgId"),rs.getString("isPost"),
-						rs.getString("isTop"), rs.getString("changeDateTime"));
+						rs.getString("isTop"), rs.getString("changeDateTime"),rs.getString("appndFileName"),rs.getString("appndFilePath"));
 				return news;
 			} catch (Exception e) {
 				e.printStackTrace();

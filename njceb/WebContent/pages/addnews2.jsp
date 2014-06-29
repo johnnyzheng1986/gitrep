@@ -12,12 +12,15 @@
 <link rel="stylesheet" href="../uploadify/uploadify.css" type="text/css"></link>
 <script type="text/javascript" src="../uploadify/jquery.uploadify-3.1.min.js"></script>
 <script>
+	var filePath="";
+	var fileName ="";
 	function CKupdate() {
 		for (instance in CKEDITOR.instances)
 			CKEDITOR.instances[instance].updateElement();
 	}
 	
 	$(function() {
+		//var fileMap = new HashMap();
 		$("#multiple_file_upload").uploadify({
 			'uploader' : '../fileUpload.action',//************ action **************
 			'height' : 27,//表示按钮的高度，默认30PX。若要改为50PX，如下设置：'height' : 50，
@@ -25,7 +28,7 @@
 			'buttonText' : '浏 览',//按钮上显示的文字，默认”SELECT FILES”
 			'buttonCursor' : 'hand',//上传按钮Hover时的鼠标形状，默认值是’hand’
 			'auto' : false, //是否自动开始   
-			'multi' : true, //是否支持多文件上传，默认为true
+			'multi' : false, //是否支持多文件上传，默认为true
 			'method' : 'post',//默认是’post’,也可以设置为’get’
 			'swf' : '../uploadify/uploadify.swf',//进度条显示文件
 			'cancelImg' : '../uploadify/uploadify-cancel.png',//取消按钮的图片
@@ -53,21 +56,21 @@
 			},
 			'onUploadSuccess' : function(file, data, response) {
 				//alert(file.name + " upload success !");
-				//alert(data + "----" + response);
+				filePath=data;
+				fileName = file.name;
 				$("#stopUpload").attr("hidden",true);
 			}
 
 		});
+	
 	});
-	
-	
 	
 	function saveNews() {
 		CKupdate();
 		
 		/* Get input values from form */
 	    var values = jQuery("#newsForm").serializeArray();
-
+		
 	    /* Because serializeArray() ignores unset checkboxes and radio buttons: */
 	    values = values.concat(
 	            jQuery('#newsForm input[type=checkbox]:not(:checked)').map(
@@ -75,6 +78,7 @@
 	                        return {"name": this.name, "value": 'off'}
 	                    }).get()
 	    );
+	    values = values.concat({"name":"fileName","value":fileName},{"name":"filePath","value":filePath});
 
 		$.ajax({
 			cache : true,
@@ -90,6 +94,7 @@
 			}
 		});
 	}
+		
 
 </script>
 </head>
@@ -115,12 +120,14 @@
 		</div>
 
 		
-	 	<div align="center">  
+	 	<div align="left">
+	 	  	添加附件：
 	        <input type="file" name="uploadify" id="multiple_file_upload" />  
 	        <hr>  
 	        <a href="javascript:$('#multiple_file_upload').uploadify('upload','*')">开始上传</a>  
 	        <a href="javascript:$('#multiple_file_upload').uploadify('cancel','*')">取消上传</a>  
 	        <a href="javascript:$('#multiple_file_upload').uploadify('stop','*')" hidden=true id="stopUpload">停止上传</a>  
+	    	<input type="hidden"></input>
 	    </div>  		
 		<div>
 			<input type="button" value="保存" onclick="saveNews()"></input>

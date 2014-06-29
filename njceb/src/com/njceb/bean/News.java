@@ -17,12 +17,14 @@ public class News implements Serializable {
 	private String isPost;	//是否发布
 	private String isTop;	//是否置顶
 	private String changeDateTime;
-	
+	private String appndFileName;
+	private String appndFilePath;
 	
 	public News(){}
 	
 	public News(String newsId, String newsTitle, String dateTime, 
-			String content,String orgId,String isPost,String isTop,String changeDateTime) {
+			String content,String orgId,String isPost,String isTop,
+			String changeDateTime,String appndFileName,String appndFilePath) {
 		this.newsId = newsId;
 		this.newsTitle = newsTitle;
 		this.dateTime = dateTime;
@@ -31,6 +33,9 @@ public class News implements Serializable {
 		this.isPost = isPost;
 		this.isTop = isTop;
 		this.changeDateTime = changeDateTime;
+		this.appndFileName = appndFileName;
+		this.appndFilePath = appndFilePath;
+		
 	}
 
 	public String getOrgId() {
@@ -95,6 +100,22 @@ public class News implements Serializable {
 
 	public void setChangeDateTime(String changeDateTime) {
 		this.changeDateTime = changeDateTime;
+	}
+
+	public String getAppndFilePath() {
+		return appndFilePath;
+	}
+
+	public void setAppndFilePath(String appndFilePath) {
+		this.appndFilePath = appndFilePath;
+	}
+
+	public String getAppndFileName() {
+		return appndFileName;
+	}
+
+	public void setAppndFileName(String appndFileName) {
+		this.appndFileName = appndFileName;
 	}
 
 

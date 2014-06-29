@@ -65,13 +65,15 @@ public class NewsController {
 	@ResponseBody
 	public String addNews(@RequestParam(value="content") String content,@RequestParam(value="newsTitle") String newsTitle,
 			@RequestParam(value="newsAuthor") String newsAuthor,@RequestParam(value="isPost") String isPost
-			,@RequestParam(value="isTop") String isTop,HttpSession session) {
+			,@RequestParam(value="isTop") String isTop,@RequestParam(value="fileName") String fileName,
+			@RequestParam(value="filePath") String filePath,HttpSession session) {
 		
 		//获取登录用户信息
 //		String loginUser = session.getAttribute("LOGIN_USER").toString();
 		//通过用户名，查找用户机构
 //		UserInfo userInfo =userInfoService.getUserInfo(loginUser);
 //		String orgId=userInfo.getOrgId();
+		//暂时写死
 		String orgId = "10001";
 		
 		//获取系统时间
@@ -96,7 +98,8 @@ public class NewsController {
 		
 		String newsId = "";
 		String changeDateTime="";
-		News news = new News(newsId,newsTitle,dateString,content,orgId,isPost,isTop,changeDateTime);
+		News news = new News(newsId,newsTitle,dateString,content,orgId,
+				isPost,isTop,changeDateTime,fileName,filePath);
 		newsService.addNews(news);
 		return  "OK";
 		
@@ -105,7 +108,8 @@ public class NewsController {
 	@ResponseBody
 	public String  updateNews(@RequestParam(value="content") String newsId,@RequestParam(value="content") String content,@RequestParam(value="newsTitle") String newsTitle,
 			@RequestParam(value="newsAuthor") String newsAuthor,@RequestParam(value="isPost") String isPost
-			,@RequestParam(value="isTop") String isTop,HttpSession session){
+			,@RequestParam(value="isTop") String isTop,@RequestParam(value="fileName") String fileName,
+			@RequestParam(value="filePath") String filePath,HttpSession session){
 		
 		//获取登录用户信息
 		String loginUser = session.getAttribute("LOGIN_USER").toString();
@@ -120,7 +124,8 @@ public class NewsController {
 		System.out.println("date="+dateString);
 			
 		String changeDateTime = dateString;
-		News news = new News(newsId,newsTitle,dateString,content,orgId,isPost,isTop,changeDateTime);
+		News news = new News(newsId,newsTitle,dateString,content,orgId,
+				isPost,isTop,changeDateTime,fileName,filePath);
 		return  "OK";
 	}
 	@RequestMapping(value = "/delNews.action", method = RequestMethod.POST)
