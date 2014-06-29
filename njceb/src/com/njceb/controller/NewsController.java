@@ -1,5 +1,8 @@
 package com.njceb.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,17 +63,64 @@ public class NewsController {
 	}
 	@RequestMapping(value = "/addNews.action",method = RequestMethod.POST, produces = "text/xml;charset=UTF-8")
 	@ResponseBody
-	public String addNews(@RequestParam(value="content") String content,@RequestParam(value="newsTitle") String newsTitle) {
-		News news = new News("",content, "",newsTitle);
+	public String addNews(@RequestParam(value="content") String content,@RequestParam(value="newsTitle") String newsTitle,
+			@RequestParam(value="newsAuthor") String newsAuthor,@RequestParam(value="isPost") String isPost
+			,@RequestParam(value="isTop") String isTop,HttpSession session) {
+		
+		//获取登录用户信息
+//		String loginUser = session.getAttribute("LOGIN_USER").toString();
+		//通过用户名，查找用户机构
+//		UserInfo userInfo =userInfoService.getUserInfo(loginUser);
+//		String orgId=userInfo.getOrgId();
+		String orgId = "10001";
+		
+		//获取系统时间
+		SimpleDateFormat df= new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Calendar calendar = Calendar.getInstance();
+		Date nowDate  = calendar.getTime();
+		String dateString = "";
+		
+		//将checkbox的值转化一下
+		
+		if (isPost.equals("on")) {
+			isPost = "1";
+			dateString = df.format(nowDate);
+		}else {
+			isPost="0";
+		}
+		if (isTop.equals("on")) {
+			isTop = "1";
+		}else {
+			isTop="0";
+		}
+		
+		String newsId = "";
+		String changeDateTime="";
+		News news = new News(newsId,newsTitle,dateString,content,orgId,isPost,isTop,changeDateTime);
 		newsService.addNews(news);
 		return  "OK";
 		
 	}
 	@RequestMapping(value = "/updateNews.action", method = RequestMethod.POST, produces = "text/xml;charset=UTF-8")
 	@ResponseBody
-	public String  updateNews(@RequestParam(value="newsId") String newsId,@RequestParam(value="content") String content,@RequestParam(value="newsTitle") String newsTitle,@RequestParam(value="orgId") String orgId) {
-		News news = new News(newsId,content,newsTitle, orgId);
-		newsService.updateNews(news);
+	public String  updateNews(@RequestParam(value="content") String newsId,@RequestParam(value="content") String content,@RequestParam(value="newsTitle") String newsTitle,
+			@RequestParam(value="newsAuthor") String newsAuthor,@RequestParam(value="isPost") String isPost
+			,@RequestParam(value="isTop") String isTop,HttpSession session){
+		
+		//获取登录用户信息
+		String loginUser = session.getAttribute("LOGIN_USER").toString();
+		//通过用户名，查找用户机构
+		UserInfo userInfo =userInfoService.getUserInfo(loginUser);
+		String orgId=userInfo.getOrgId();
+		//获取系统时间
+		SimpleDateFormat df= new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Calendar calendar = Calendar.getInstance();
+		Date nowDate  = calendar.getTime();
+		String dateString = df.format(nowDate);
+		System.out.println("date="+dateString);
+			
+		String changeDateTime = dateString;
+		News news = new News(newsId,newsTitle,dateString,content,orgId,isPost,isTop,changeDateTime);
 		return  "OK";
 	}
 	@RequestMapping(value = "/delNews.action", method = RequestMethod.POST)
