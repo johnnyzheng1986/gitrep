@@ -12,6 +12,7 @@ public class News implements Serializable {
 	private String newsId;
 	private String newsTitle;	
 	private String dateTime;	//新闻发布时间
+	private String author;	//投稿人
 	private String content;		//新闻内容
 	private String orgId;	//新闻发布机构
 	private String isPost;	//是否发布
@@ -22,12 +23,13 @@ public class News implements Serializable {
 	
 	public News(){}
 	
-	public News(String newsId, String newsTitle, String dateTime, 
+	public News(String newsId, String newsTitle, String dateTime,String author,
 			String content,String orgId,String isPost,String isTop,
 			String changeDateTime,String appndFileName,String appndFilePath) {
 		this.newsId = newsId;
 		this.newsTitle = newsTitle;
 		this.dateTime = dateTime;
+		this.author = author;
 		this.content = content;
 		this.orgId = orgId;
 		this.isPost = isPost;
@@ -116,6 +118,14 @@ public class News implements Serializable {
 
 	public void setAppndFileName(String appndFileName) {
 		this.appndFileName = appndFileName;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 

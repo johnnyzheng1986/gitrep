@@ -61,6 +61,40 @@ public class NewsController {
 		return  result;
 		
 	}
+	
+	@RequestMapping(value = "/getNewsListForConsole.action", method = RequestMethod.POST)
+	@ResponseBody
+	public Map getNewsListForConsole(HttpSession session,@RequestParam(value="page") String page,
+			@RequestParam(value="rows") String rows,@RequestParam(value="sort") String sort,
+			@RequestParam(value="order") String order) {
+//		String userName = session.getAttribute("LOGIN_USER").toString().trim();
+//		UserInfo userInfo =userInfoService.getUserInfo(userName);
+		page = (Integer.parseInt(page)-1)+"";
+		//暂时使用此方法获取列表
+		List newslist = newsService.getNewsList(page);
+		int count = newsService.getTotalNewsCount();
+		//需要返回页面总数和分页数目
+		Map<String, Object> result = new HashMap<String, Object>(5);
+		int totalPage =0;
+		//10是指的一页显示多少条，以后设计成前台传回
+		if (count%10!=0) {
+			totalPage = count/10+1;
+		}else {
+			totalPage= count/10;
+		}
+		int curPage =Integer.parseInt(page)+1;
+		result.put("total", newslist.size()); 
+		result.put("totalPage", totalPage); 
+		result.put("pageSize", 10);
+		result.put("curPage", curPage);
+		result.put("rows", newslist);
+		return  result;
+		
+	}
+	
+	
+	
+	
 	@RequestMapping(value = "/addNews.action",method = RequestMethod.POST, produces = "text/xml;charset=UTF-8")
 	@ResponseBody
 	public String addNews(@RequestParam(value="content") String content,@RequestParam(value="newsTitle") String newsTitle,
@@ -98,7 +132,7 @@ public class NewsController {
 		
 		String newsId = "";
 		String changeDateTime="";
-		News news = new News(newsId,newsTitle,dateString,content,orgId,
+		News news = new News(newsId,newsTitle,dateString,newsAuthor,content,orgId,
 				isPost,isTop,changeDateTime,fileName,filePath);
 		newsService.addNews(news);
 		return  "OK";
@@ -124,7 +158,7 @@ public class NewsController {
 		System.out.println("date="+dateString);
 			
 		String changeDateTime = dateString;
-		News news = new News(newsId,newsTitle,dateString,content,orgId,
+		News news = new News(newsId,newsTitle,dateString,newsAuthor,content,orgId,
 				isPost,isTop,changeDateTime,fileName,filePath);
 		return  "OK";
 	}

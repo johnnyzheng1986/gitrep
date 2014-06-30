@@ -29,7 +29,7 @@ public class NewsDaoImpl extends BaseDaoImpl implements NewsDao {
 		int pageSize =10;
 		int start = pageNum*pageSize;
 		int end = (pageNum+1)*pageSize;
-		String sql = "select * from  news where 1=1 LIMIT ?,? order by newsId desc" ;
+		String sql = "select * from  news where 1=1 LIMIT ?,?  " ;
 		List list = jdbcTemplate.queryForList(sql,new Object[]{start,end});
 		if(list == null || list.isEmpty()){
 			return null;
@@ -40,10 +40,10 @@ public class NewsDaoImpl extends BaseDaoImpl implements NewsDao {
 
 	@Override
 	public int updateNews(News news) {
-		String sqlString  = "update news set newsTitle=?,dateTime=?,content=?,orgId=?," +
+		String sqlString  = "update news set newsTitle=?,dateTime=?,author=?,content=?,orgId=?," +
 				" isPost=?,isTop=?,changeDateTime=?, appndFileName=?,appndFilePath=? where newsId=?";
-		jdbcTemplate.update(sqlString,new Object[]{news.getNewsTitle(),news.getDateTime(),news.getContent(),
-				news.getOrgId(),news.getIsPost(),news.getIsTop(),news.getChangeDateTime(),
+		jdbcTemplate.update(sqlString,new Object[]{news.getNewsTitle(),news.getDateTime(),news.getAuthor(),
+				news.getContent(),news.getOrgId(),news.getIsPost(),news.getIsTop(),news.getChangeDateTime(),
 				news.getAppndFileName(),news.getAppndFilePath(),news.getNewsId()});
 		return 0;
 	}
@@ -57,11 +57,11 @@ public class NewsDaoImpl extends BaseDaoImpl implements NewsDao {
 
 	@Override
 	public int addNews(News news) {
-		String sql = "insert into news (newsTitle,dateTime,content,orgId,isPost,isTop,"
+		String sql = "insert into news (newsTitle,dateTime,author,content,orgId,isPost,isTop,"
 				+ "changeDateTime,appndFileName,appndFilePath) " +
-				" values (?,?,?,?,?,?,?,?,?)";
-		jdbcTemplate.update(sql, new Object[]{news.getNewsTitle(),news.getDateTime(),news.getContent(),
-				news.getOrgId(),news.getIsPost(),news.getIsTop(),news.getChangeDateTime(),
+				" values (?,?,?,?,?,?,?,?,?,?)";
+		jdbcTemplate.update(sql, new Object[]{news.getNewsTitle(),news.getDateTime(),news.getAuthor(),
+				news.getContent(),news.getOrgId(),news.getIsPost(),news.getIsTop(),news.getChangeDateTime(),
 				news.getAppndFileName(),news.getAppndFilePath()});
 		return 0;
 		
@@ -72,7 +72,7 @@ public class NewsDaoImpl extends BaseDaoImpl implements NewsDao {
 		@Override
 		public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 			try {
-				News news = new News(rs.getString("newsId"),rs.getString("newsTitle"),rs.getString("dateTime"),
+				News news = new News(rs.getString("newsId"),rs.getString("newsTitle"),rs.getString("dateTime"),rs.getString("author"),
 						rs.getString("content"),rs.getString("orgId"),rs.getString("isPost"),
 						rs.getString("isTop"), rs.getString("changeDateTime"),rs.getString("appndFileName"),rs.getString("appndFilePath"));
 				return news;
