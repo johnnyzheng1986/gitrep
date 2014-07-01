@@ -37,8 +37,8 @@
 			'fileSizeLimit' : '50MB',//上传文件大小限制，默认单位是KB，若需要限制大小在100KB以内，可设置该属性为：'100KB'
 			'fileObjName' : 'myFile',//文件对象名称。用于在服务器端获取文件。
 			'formData' : {
-				'userName' : 'willwind',
-				'content' : 'aaaaaaaaaaaaaaaaaaaaaaaaaa'
+				'userName' : '',
+				'content' : ''
 			},
 			'progressData' : 'all', // 'percentage''speed''all'//队列中显示文件上传进度的方式：all-上传速度+百分比，percentage-百分比，speed-上传速度
 			'preventCaching' : true,//若设置为true，一个随机数将被加载swf文件URL的后面，防止浏览器缓存。默认值为true

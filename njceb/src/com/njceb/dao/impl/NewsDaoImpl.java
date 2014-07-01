@@ -100,15 +100,15 @@ public class NewsDaoImpl extends BaseDaoImpl implements NewsDao {
 	}
 
 	@Override
-	public void setNewsToTop(String newsId) {
+	public int setNewsToTop(String newsId) {
 		String sqlString= "update news set isTop=?,changeDateTime=? where newsId=?";
 		SimpleDateFormat sf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date =new Date();
 		String dateString = sf.format(date);
 		
-		jdbcTemplate.update(sqlString,new Object[]{"1",dateString});
+		jdbcTemplate.update(sqlString,new Object[]{"1",dateString,newsId});
 		
-		
+		return 0;
 	}
 
 }

@@ -15,4 +15,5 @@ public interface NewsService {
 	public int  deleteNews(String newsId);
 	public Map<String, Object> getNewsById(String newsId);
 	public int  getTotalNewsCount();
+	public int setNewsToTop(String newId);
 }

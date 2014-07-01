@@ -37,7 +37,7 @@ public class NewsServiceImpl implements NewsService {
 
 	@Override
 	public int deleteNews(String newsId) {
-		return 0;
+		return newsDao.delNews(newsId);
 	}
 
 	@Override
@@ -48,6 +48,12 @@ public class NewsServiceImpl implements NewsService {
 	@Override
 	public int getTotalNewsCount() {
 		return newsDao.getTotalNewsCount();
+	}
+
+	@Override
+	public int setNewsToTop(String newsId) {
+		return newsDao.setNewsToTop(newsId);
+		
 	}
 	
 	

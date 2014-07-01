@@ -175,5 +175,10 @@ public class NewsController {
 		Map<String , Object> map= newsService.getNewsById(newsId);
 		return  map;
 	}
-	
+	@RequestMapping(value = "/setTop.action", method = RequestMethod.POST)
+	@ResponseBody
+	public String  setNewsTop(@RequestParam(value="newsId") String newsId) {
+		newsService.setNewsToTop(newsId);
+		return  "OK";
+	}
 }

@@ -15,8 +15,8 @@
 			$('#newsTable').datagrid({
 				title:'新闻信息',
 				iconCls:'icon-save',
-				width:700,
-				height:350,
+				width:800,
+				height:600,
 				nowrap: true,
 				autoRowHeight: false,
 				striped: true,
@@ -33,8 +33,12 @@
 				columns:[[
 			        {title:'新闻信息',colspan:3},
 					{field:'opt',title:'操作',width:100,align:'center', rowspan:2,
-						formatter:function(value,rec){
-							return '<span style="color:red">修改  置顶  删除</span>';
+						formatter:function(value,row,index){
+							var t = '<a href="#" onclick="setTop(this)">置顶</a>';
+							var e = '<a href="#" onclick="editNews(this)">修改</a> ';
+							var d = '<a href="#" onclick="delNews(this)">删除</a>';
+							return t+' '+' '+e+' '+d;
+							
 						}
 					}
 				],[
@@ -74,6 +78,70 @@
 				}
 			});
 		});
+		
+		function editNews() {
+		
+		}
+		
+		
+		function setTop() {
+			var row = $('#newsTable').datagrid('getSelected');
+			if (row) {
+				
+				$.post('../setTop.action', {
+					newsId : row.newsId
+				}, function(result) {
+					if (result=='OK') {
+						$.messager.show({ 
+							title : '提示',
+							msg : '置顶成功'
+						});
+						$('#newsTable').datagrid('reload'); // reload the user data
+					} else {
+						$.messager.show({ // show error message
+							title : '失败提示',
+							msg : result.errorMsg
+						});
+					}
+				});
+				
+			} else {
+				$.messager.alert('未选记录提示','请选择一条记录!','error');
+			}
+		}
+		
+		
+		
+		
+		function delNews() {
+			var row = $('#newsTable').datagrid('getSelected');
+			if (row) {
+				$.messager.confirm('确认', '您确定要删除此新闻吗?', function(r) {
+					if (r) {
+						$.post('../delNews.action', {
+							newsId : row.newsId
+						}, function(result) {
+							if (result=='OK') {
+								$.messager.show({ // show error message
+									title : '删除新闻成功提示',
+									msg : '删除成功'
+								});
+							} else {
+								$.messager.show({ // show error message
+									title : '删除新闻失败提示',
+									msg : result.errorMsg
+								});
+							}
+						});
+					}
+				});
+			} else {
+				$.messager.alert('未选记录提示','请选择一条您要删除的记录!','error');
+			}
+		}
+		
+		
+		
 	</script>
 </head>
 <body>
